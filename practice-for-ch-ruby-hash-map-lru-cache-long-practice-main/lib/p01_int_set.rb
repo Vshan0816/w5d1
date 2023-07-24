@@ -41,18 +41,27 @@ class IntSet
   end
 
   def insert(num)
+    @store[num % 20] << num
   end
 
   def remove(num)
+    @store[num % 20].delete(num)
   end
 
   def include?(num)
+    @store.each do |subarray|
+      subarray.each do |el|
+        return true if el == num
+      end
+    end
+    false
   end
 
   private
 
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
+    @store[num % num_buckets]
   end
 
   def num_buckets
@@ -69,12 +78,20 @@ class ResizingIntSet
   end
 
   def insert(num)
+    @store[num % num_buckets] << num if !@store[num % num_buckets].include?(num)
   end
 
   def remove(num)
+    @store[num % num_buckets].delete(num)
   end
 
   def include?(num)
+    @store.each do |subarray|
+      subarray.each do |el|
+        return true if el == num
+      end
+    end
+    false
   end
 
   private
